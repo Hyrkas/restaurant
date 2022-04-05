@@ -1,15 +1,23 @@
 package com.aikka.restaurant.model;
 
+import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
+@Entity
+@Table(name = "restaurant")
 public class Restaurant {
     private Integer id;
     private String name;
     private String location;
+    private List<MenuItem> items = new ArrayList<>();
 
     public Restaurant() {
     }
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     public Integer getId() {
         return id;
     }
@@ -18,6 +26,7 @@ public class Restaurant {
         this.id = id;
     }
 
+    @Column(name = "name")
     public String getName() {
         return name;
     }
@@ -26,6 +35,7 @@ public class Restaurant {
         this.name = name;
     }
 
+    @Column(name = "location")
     public String getLocation() {
         return location;
     }
@@ -45,5 +55,14 @@ public class Restaurant {
     @Override
     public int hashCode() {
         return Objects.hash(getId());
+    }
+
+    @Transient
+    public List<MenuItem> getItems() {
+        return items;
+    }
+
+    public void setMenuItems(List<MenuItem> items) {
+        this.items = items;
     }
 }

@@ -1,13 +1,26 @@
 package com.aikka.restaurant.model;
 
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import java.io.Serializable;
 import java.util.Objects;
 
-public class OrderItem {
+@Entity
+@Table(name = "customer_order_item")
+public class OrderItem implements Serializable {
 
+    @Id
     private Integer orderId;
+    @Id
     private Integer menuItemId;
 
     public OrderItem() {
+    }
+
+    public OrderItem(Integer orderId, Integer itemId) {
+        this.orderId = orderId;
+        this.menuItemId = itemId;
     }
 
     public Integer getOrderId() {

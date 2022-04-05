@@ -4,16 +4,11 @@ import com.aikka.restaurant.model.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.orm.jpa.EntityManagerFactoryBuilder;
 import org.springframework.stereotype.Component;
 
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.transaction.Transactional;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 @Component
 public class UserDAO {
@@ -30,22 +25,35 @@ public class UserDAO {
         return user;
     }
 
-    public User findProfile() {
+    public User findProfile(Integer userId) {
         logger.info("searching profile");
-        return em.find(User.class, 1);
+        return em.find(User.class, userId);
     }
 
     public User findUserByUserNameAndPassword(String userName, String password) {
         try {
             return (User) em.createNativeQuery(
-                    "select * from user " +
-                            "where username like :username and password like :password", User.class)
+                            "select * from user " +
+                                    "where username like :username and password like :password", User.class)
                     .setParameter("username", userName)
                     .setParameter("password", password)
                     .getSingleResult();
         } catch (NoResultException e) {
             logger.warn("User tried to login with non valid credentials");
             return null;
+        }
+    }
+
+    public User findUserByUserId(Integer userId) {
+        try {
+            return (User) em.createNativeQuery(
+                            "select * from user " +
+                                    "where id like :userId", User.class
+                    ).setParameter("userId", userId)
+                    .getSingleResult();
+        } catch (Exception e) {
+            logger.warn("User not found");
+            throw new RuntimeException("User not found");
         }
     }
 }

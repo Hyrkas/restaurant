@@ -1,17 +1,23 @@
 package com.aikka.restaurant.model;
 
+import javax.persistence.*;
 import java.util.Objects;
 
+@Entity
+@Table(name = "menu_item")
 public class MenuItem {
     private Integer id;
     private String name;
     private String description;
     private Double price;
     private Integer restaurantId;
+    private Restaurant restaurant;
 
     public MenuItem() {
     }
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     public Integer getId() {
         return id;
     }
@@ -20,6 +26,7 @@ public class MenuItem {
         this.id = id;
     }
 
+    @Column(name = "name")
     public String getName() {
         return name;
     }
@@ -28,6 +35,7 @@ public class MenuItem {
         this.name = name;
     }
 
+    @Column(name = "description")
     public String getDescription() {
         return description;
     }
@@ -36,6 +44,7 @@ public class MenuItem {
         this.description = description;
     }
 
+    @Column(name = "price")
     public Double getPrice() {
         return price;
     }
@@ -44,6 +53,7 @@ public class MenuItem {
         this.price = price;
     }
 
+    @Column(name = "restaurant_id")
     public Integer getRestaurantId() {
         return restaurantId;
     }
@@ -63,5 +73,14 @@ public class MenuItem {
     @Override
     public int hashCode() {
         return Objects.hash(getId(), getRestaurantId());
+    }
+
+    @Transient
+    public Restaurant getRestaurant() {
+        return restaurant;
+    }
+
+    public void setRestaurant(Restaurant restaurant) {
+        this.restaurant = restaurant;
     }
 }

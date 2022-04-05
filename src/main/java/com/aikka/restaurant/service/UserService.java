@@ -15,8 +15,8 @@ public class UserService {
         return userDAO.insertUser(user);
     }
 
-    public User fetchProfile() {
-        return userDAO.findProfile();
+    public User fetchProfile(Integer userId) {
+        return userDAO.findProfile(userId);
     }
 
     public User fetchUserByUserNameAndPassword(String userName, String password) {

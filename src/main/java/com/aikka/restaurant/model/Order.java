@@ -1,21 +1,39 @@
 package com.aikka.restaurant.model;
 
+import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
+@Entity
+@Table(name = "customer_order")
 public class Order {
     private Integer id;
     private Integer restaurantId;
+    private Integer customerId;
     private OrderStatus status;
     private LocalDateTime createdAt;
+    private final Set<MenuItem> items = new HashSet<>();
+
+    @Transient
+    public Set<MenuItem> getItems() {
+        return items;
+    }
+
+    public void addItem(MenuItem menuItem) {
+        this.items.add(menuItem);
+    }
 
     public static enum OrderStatus {
-        PENDING, MAKING, DELIVERING, DELIVERED, CANCELLED
+        PENDING, DOING, DELIVERING, DELIVERED, CANCELLED
     }
 
     public Order() {
     }
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     public Integer getId() {
         return id;
     }
@@ -24,6 +42,7 @@ public class Order {
         this.id = id;
     }
 
+    @Column(name = "restaurant_id")
     public Integer getRestaurantId() {
         return restaurantId;
     }
@@ -32,6 +51,17 @@ public class Order {
         this.restaurantId = restaurantId;
     }
 
+    @Column(name = "customer_id")
+    public Integer getCustomerId() {
+        return customerId;
+    }
+
+    public void setCustomerId(Integer customerId) {
+        this.customerId = customerId;
+    }
+
+    @Column(name = "status")
+    @Enumerated(EnumType.STRING)
     public OrderStatus getStatus() {
         return status;
     }
@@ -40,6 +70,7 @@ public class Order {
         this.status = status;
     }
 
+    @Column(name = "created_at")
     public LocalDateTime getCreatedAt() {
         return createdAt;
     }
